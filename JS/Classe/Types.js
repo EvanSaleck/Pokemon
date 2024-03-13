@@ -1,17 +1,14 @@
 class Type {
-    // Variables de classe pour stocker les types
-    static all_types = {};
-
-
     constructor(nom, efficacite) {
         this.nom = nom;
         this.efficacite = efficacite;
     }
 
     toString() {
-        return "[Nom Attaque: " + this.nom + "Efficacité: " + this.efficacite + "]";
+        return this.nom;
     }
-
+    
+    static all_types = {};
     static addType(type) {
         this.all_types[type.nom] = type;
     }

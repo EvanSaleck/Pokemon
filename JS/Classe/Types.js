@@ -1,11 +1,11 @@
 class Type {
-    constructor(nom, efficacite) {
-        this.nom = nom;
+    constructor(nom_type, efficacite) {
+        this.nom_type = nom_type;
         this.efficacite = efficacite;
     }
 
     toString() {
-        return this.nom;
+        return this.nom_type;
     }
     multiplicateurAttaque(typeDef) {
         for (let i = 0; i < this.efficacite.length; i++) {
@@ -19,8 +19,13 @@ class Type {
     static all_types = {};
 
     static ajouterType(type) {
-        Type.all_types[type.nom] = type;
-        console.log("Type ajouté: " + type.nom);
+        if (type in Type.all_types) {
+            throw new Error("Type déjà existant");
+            
+        } else {
+            Type.all_types[type.nom_type] = type;
+            console.log("Type ajouté: " + type.nom_type);
+        } 
     }
 
     static listerNomTypes() {
@@ -29,6 +34,7 @@ class Type {
     }
 }
 
+/*
 // Example:
 const typeFeu = new Type("Fire", [
     {"Bug": 1.6},
@@ -76,3 +82,4 @@ Type.addType(typeTenebres);
 Type.addType(typeFeu);
 
 console.log(typeFeu.toString()); // Output: Fire
+*/

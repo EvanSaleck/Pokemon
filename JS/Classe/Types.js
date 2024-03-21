@@ -1,9 +1,15 @@
 class Type {
+    static all_types = {};
     constructor(nom_type, efficacite) {
         this.nom_type = nom_type;
         this.efficacite = efficacite;
     }
 
+
+    getNomType() {
+        return this.nom_type;
+    }
+    
     toString() {
         return this.nom_type;
     }
@@ -16,7 +22,6 @@ class Type {
         return "Type non trouvé";
     }
     
-    static all_types = {};
 
     static ajouterType(type) {
         if (type in Type.all_types) {

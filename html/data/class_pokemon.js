@@ -145,10 +145,13 @@ class Pokemon {
       .forEach((poke) => {
         // Création d'un objet Pokemon
         let pokegen;
-        for(let genKey in generation){
+        for (let genKey in generation) {
           let genData = generation[genKey];
-          for(let gen in genData){
-            if(genData[gen].name === poke.pokemon_name && genData[gen].id === poke.pokemon_id){
+          for (let gen in genData) {
+            if (
+              genData[gen].name === poke.pokemon_name &&
+              genData[gen].id === poke.pokemon_id
+            ) {
               pokegen = genData[gen].generation_number;
             }
           }

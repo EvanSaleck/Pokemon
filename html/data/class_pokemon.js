@@ -3,9 +3,10 @@ class Pokemon {
   static all_pokemons = {};
 
   // Constructeur de la classe Pokemon
-  constructor(nom, forme, atk, dfs, stamina) {
+  constructor(nom, forme, gen, atk, dfs, stamina) {
     this.nom = nom;
     this.forme = forme;
+    this.gen = gen;
     this.atk = atk;
     this.dfs = dfs;
     this.stamina = stamina;
@@ -119,6 +120,8 @@ class Pokemon {
       this.nom +
       " | Forme : " +
       this.forme +
+      "Génération : " +
+      this.gen +
       " | Attaque : " +
       this.atk +
       " | Défense : " +
@@ -141,9 +144,20 @@ class Pokemon {
       .filter((poke) => poke.form === "Normal")
       .forEach((poke) => {
         // Création d'un objet Pokemon
+        let pokegen;
+        for(let genKey in generation){
+          let genData = generation[genKey];
+          for(let gen in genData){
+            if(genData[gen].name === poke.pokemon_name && genData[gen].id === poke.pokemon_id){
+              pokegen = genData[gen].generation_number;
+            }
+          }
+        }
+
         let Poke = new Pokemon(
           poke.pokemon_name,
           poke.form,
+          pokegen,
           poke.base_attack,
           poke.base_defense,
           poke.base_stamina

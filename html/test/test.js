@@ -218,3 +218,5 @@ function ExecuteCommand(CmdNom) {
       console.log("Test non reconnu");
   }
 }
+
+console.log(Pokemon.all_pokemons);

@@ -1,0 +1,87 @@
+@font-face {
+    font-family: PokSolid;
+    src: url('./fonts/PokemonSolid.ttf');
+}
+
+@font-face {
+    font-family: PokHollow;
+    src: url('./fonts/PokemonHollow.ttf');
+}
+
+h1 {
+    font-family: 'PokHollow';
+    color: #FFCB05;
+    font-size: 50px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    justify-content: center;
+    border: 1px solid #4D77CF;
+    border-radius: 10px;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    /* min-width: 400px; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+thead tr {
+    border: none;
+    background-color: #FFCB05;
+    color: #4D77CF;
+    text-align: center;
+}
+
+th, td {
+    padding: 12px 15px;
+    color: #4D77CF;
+    text-align: center;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #FFCB05;
+}
+
+tbody tr:hover {
+    font-weight: bold;
+    color: #4D77CF;
+}
+
+#pagination {
+    align-items: start;
+}
+
+/* Définition de la scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 1px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #4242428c;
+    border-radius: 100vw;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background: #FFCB05;
+    border-radius: 100vw;
+  }
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #FFCB05;
+  }

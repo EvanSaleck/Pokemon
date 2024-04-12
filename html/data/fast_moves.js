@@ -207,6 +207,15 @@ let fast_moves = [
         "stamina_loss_scaler": 0.01,
         "type": "Normal"
 },
+{
+    "duration": 500,
+    "energy_delta": 5,
+    "move_id": 221,
+    "name": "Tackle",
+    "power": 5,
+    "stamina_loss_scaler": 0.01,
+    "type": "Normal"
+},
     {
         "duration": 600,
         "energy_delta": 6,

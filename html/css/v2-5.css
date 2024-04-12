@@ -1,0 +1,169 @@
+@font-face {
+    font-family: PokSolid;
+    src: url('./fonts/PokemonSolid.ttf');
+}
+
+@font-face {
+    font-family: PokHollow;
+    src: url('./fonts/PokemonHollow.ttf');
+}
+
+
+@font-face {
+    font-family: PokClassic;
+    src: url('./fonts/Pokemon_Classic.ttf');
+}
+
+body {
+    display: flex;
+    font-family: 'PokClassic';
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+/* --------------- Style titre --------------- */
+
+.title {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 12em; 
+}
+
+.solidTitle, .hollowTitle {
+    position: absolute;
+    font-size: 80px;
+    width: 100%;
+    text-align: center;
+}
+
+.solidTitle {
+    font-family: 'PokSolid';
+    color: #FFCB05;
+    z-index: 0;
+}
+
+.hollowTitle {
+    font-family: 'PokHollow';
+    color: #4D77CF;
+    z-index: 1;
+}
+
+/* --------------- Style container --------------- */
+
+#container {
+    width: 80%;
+}
+
+/* --------------- Style tableau --------------- */
+
+table {
+    font-family: 'PokClassic';
+    justify-content: center;
+    border: 1px solid #4D77CF;
+    border-radius: 10px;
+    margin: 25px 0;
+    font-size: 0.9em;
+    /* min-width: 400px; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+thead tr {
+    border: none;
+    background-color: #FFCB05;
+    color: #4D77CF;
+    text-align: center;
+}
+
+th, td {
+    padding: 6px 6px;
+    color: #4D77CF;
+    text-align: center;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #FFCB05;
+}
+
+tbody tr:hover {
+    font-weight: bold;
+    color: #4D77CF;
+}
+
+/* --------------- Style bouton --------------- */
+
+#paginationTop, #paginationBottom {
+    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#paginationTop button, #paginationBottom button {
+    font-family: 'PokClassic';
+    background-color: #f3f3f3;
+    color: #4D77CF;
+    padding: 8px 16px;
+    border: 1px solid #FFCB05;
+    border-radius: 5px;
+    margin: 0 4px;
+}
+#paginationTop button:hover, #paginationBottom button:hover {
+    border: 2px solid #FFCB05;
+}
+
+#paginationTop button:active, #paginationBottom button:active {
+    background-color: #FFCB05;
+    transition-timing-function: ease-out;
+}
+
+/* #pagination button {
+    font-family: 'PokClassic';
+    background-color: #f3f3f3;
+    color: #4D77CF;
+    padding: 8px 16px;
+    border: 1px solid #FFCB05;
+    border-radius: 5px;
+    margin: 0 4px;
+}
+#pagination button:hover {
+    border: 2px solid #FFCB05;
+}
+
+#pagination button:active {
+    background-color: #FFCB05;
+    transition-timing-function: ease-out;
+} */
+
+
+/* --------------- Définition de la scrollbar --------------- */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 1px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #4242428c;
+    border-radius: 100vw;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background: #FFCB05;
+    border-radius: 100vw;
+  }
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #FFCB05;
+  }

@@ -7,49 +7,40 @@
     <link rel="stylesheet" href="../css/v2-5.css">
 </head>
 <body>
-    <!-- Faire une bannière avec le titre et les boutons pour skip à gauche et à droite du compteur de la page-->
     <header>
         <div class="banner">
-            <h1 class="solidTitle">Pokédex National</h1>
-            <h1 class="hollowTitle">Pokédex National</h1>
+            <h1>Pokédex National</h1>
             <div class="pagination">
                 <button class="precedent"><</button>
                 <button class="suivant">></button>
             </div>
         </div>
     </header>
-    <!-- <div class="title">
-        <h1 class="solidTitle">Pokédex National</h1>
-        <h1 class="hollowTitle">Pokédex National</h1>
-    </div> -->
-    <div id="container">
-        <!-- <div id="paginationTop">
-            <button class="precedent"><</button>
-            <button class="suivant">></button>
-        </div> -->
-        <table>
+
+    <div class="table-wrapper">
+        <table class="fl-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Génération</th>
-                    <th>Types</th>
-                    <th>Endurance</th>
-                    <th>Attaque</th>
-                    <th>Défense</th>
-                    <th>Image</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Génération</th>
+                    <th scope="col">Types</th>
+                    <th scope="col">Endurance</th>
+                    <th scope="col">Attaque</th>
+                    <th scope="col">Défense</th>
+                    <th scope="col">Image</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td data-label="ID"></td>
+                    <td data-label="Nom"></td>
+                    <td data-label="Génération"></td>
+                    <td data-label="Types"></td>
+                    <td data-label="Endurance"></td>
+                    <td data-label="Attaque"></td>
+                    <td data-label="Défense"></td>
+                    <td data-label="Image"></td>
                 </tr>
             </tbody>
         </table>
@@ -57,14 +48,14 @@
 </body>
 <template id="template-poke">
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td data-label="ID"></td>
+        <td data-label="Nom"></td>
+        <td data-label="Génération"></td>
+        <td data-label="Types"></td>
+        <td data-label="Endurance"></td>
+        <td data-label="Attaque"></td>
+        <td data-label="Défense"></td>
+        <td data-label="Image"></td>
     </tr>
 </template>
 </html>

@@ -1,17 +1,23 @@
 @font-face {
     font-family: PokSolid;
     src: url('./fonts/PokemonSolid.ttf');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
     font-family: PokHollow;
     src: url('./fonts/PokemonHollow.ttf');
+    font-weight: normal;
+    font-style: normal;
 }
 
 
 @font-face {
     font-family: PokClassic;
     src: url('./fonts/Pokemon_Classic.ttf');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
@@ -24,69 +30,29 @@ body {
     background-image: url('background/background_pokeball.jpg');
     background-repeat: repeat;
     background-size: 40%;
+    background-attachment: fixed;
 }
 /* --------------- Style titre --------------- */
-
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 15%;
-    background-color: #f3f3f3;
-    z-index: 1000;
-}
-
-.banner {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: center;
-    height: 100%;
-}
-
-.title {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    text-align: center;
-    margin-bottom: 12em; 
-}
-
-.solidTitle, .hollowTitle {
-    position: absolute;
-    font-size: 3em;
-    width: 100%;
-    text-align: center;
-}
-
-.solidTitle {
+h1 {
     font-family: 'PokSolid';
     color: #FFCB05;
-    z-index: 0;
-}
-
-.hollowTitle {
-    font-family: 'PokHollow';
-    color: #4D77CF;
-    z-index: 1;
+    font-size: 4em;
+    -webkit-text-stroke: 1px #194dbd;;
 }
 
 /* --------------- Style bouton --------------- */
-
 .pagination {
     display: flex;
     justify-content: center;
     align-items: flex-end;
     width: 100%;
+    margin-bottom: 1em;
 }
 
 .pagination button {
     font-family: 'PokClassic';
     background-color: #f3f3f3;
-    color: #4D77CF;
+    color: #194dbd;
     padding: 8px 16px;
     border: 1px solid #FFCB05;
     border-radius: 5px;
@@ -101,41 +67,37 @@ header {
     transition-timing-function: ease-out;
 }
 
-
-/* --------------- Style container --------------- */
-
-#container {
-    margin-top: 10%;
-    width: 80%;
+.pagination {
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
 }
 
 /* --------------- Style tableau --------------- */
-
 table {
-    font-family: 'PokClassic';
-    justify-content: center;
-    border: 1px solid #4D77CF;
-    border-radius: 10px;
-    margin: 25px 0;
-    font-size: 0.9em;
-    /* min-width: 400px; */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #ccc;
     border-collapse: separate;
-    border-spacing: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
+    border: 1px solid #194dbd;
+    margin: 0 0 5em;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
 
-thead tr {
+    justify-content: center;
+   
+    font-size: 0.9em;
+    border-spacing: 0;
+}
+  thead tr {
     border: none;
     background-color: #FFCB05;
-    color: #4D77CF;
+    color: #194dbd;
     text-align: center;
 }
 
 th, td {
     padding: 6px 6px;
-    color: #4D77CF;
+    color: #194dbd;
     text-align: center;
 }
 tbody tr:nth-of-type(odd) {
@@ -152,7 +114,30 @@ tbody tr:last-of-type {
 
 tbody tr:hover {
     font-weight: bold;
-    color: #4D77CF;
+    color: #194dbd;
+}
+  
+table caption {
+font-size: 1.5em;
+margin: .5em 0 .75em;
+}
+
+table tr {
+background-color: #f8f8f8;
+border: 1px solid #ddd;
+padding: .35em;
+}
+
+table th,
+table td {
+padding: .625em;
+text-align: center;
+}
+
+table th {
+font-size: .85em;
+letter-spacing: .1em;
+text-transform: uppercase;
 }
 
 /* --------------- Définition de la scrollbar --------------- */
@@ -174,3 +159,59 @@ tbody tr:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: #FFCB05;
   }
+
+/* --------------- Style mobile --------------- */
+@media screen and (max-width: 600px) {
+body{
+    background-size: 100%;
+}
+
+/* --------------- Style titre --------------- */
+h1{
+    text-align: center;
+}
+
+/* --------------- Style tableau --------------- */
+table {
+    border: 0;
+}
+
+table caption {
+    font-size: 1.3em;
+}
+
+table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+}
+
+table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+}
+
+table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+table td:last-child {
+    border-bottom: 0;
+}
+}

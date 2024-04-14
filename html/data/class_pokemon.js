@@ -38,6 +38,10 @@ class Pokemon {
     return this.pv;
   }
 
+  getGen() {
+    return this.gen;
+  }
+  
   setNom(nom) {
     this.nom = nom;
   }

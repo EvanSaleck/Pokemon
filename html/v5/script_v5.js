@@ -214,13 +214,7 @@ function handleFilterChange() {
 }
 
 
-/**
- * Fonction qui permet de filtrer les Pokémon en fonction des critères sélectionnés
- * @param {*} genFilter 
- * @param {*} typeFilter 
- * @param {*} nameFilter 
- * @returns  filtered
- */
+// Fonction pour filtrer les Pokémon en fonction des critères sélectionnés
 function filterPokemon(genFilter, typeFilter, nameFilter) {
     let filtered = {}; // Initialiser un objet vide pour les Pokémon filtrés
     
@@ -319,6 +313,14 @@ function OpenModal(event) {
   }
 }
 
+function ClearModal() {
+  let modal = document.getElementById("modal");
+  modal.querySelector("#titre").innerText = "";
+  modal.querySelector("#imgpoke").src = "";
+  modal.querySelector("#listfast").innerHTML = "";
+  modal.querySelector("#listcharged").innerHTML = "";
+}
+
 /**
  * Fonction qui permet d'afficher l'image du Pokémon au survol de la souris
  * @param {*} event
@@ -344,23 +346,55 @@ function StopHover(event) {
     event.srcElement.parentNode.parentNode.getAttribute("poke-id");
   divimg.classList.add("d-none");
 }
-/**
- * Fonction qui permet de trier les Pokémon en fonction de l'index de la colonne
- * @returns None
- */
+
 function destroyTable() {
     let table = document.querySelector("table");
     let tbody = table.lastElementChild;
     tbody.innerHTML = "";
 }
 
-/**
- * Permets de mettre a jour le nombre de pages
- * @param {*} poke 
- * @returns None
- */
 function UpdatePage(poke) {
     let nbpage = document.getElementById("Nbpage");
     NBDEPAGES = Math.ceil(Object.keys(poke).length / NBPARPAGE);
     nbpage.textContent = NBDEPAGES;
+}
+
+
+/**
+ * Fonction qui permet de trier les Pokémons en fonction de la colonne cliquée
+ * @param {*} idCol
+ * @returns None
+ */
+function TrierPokemon(idCol) {
+  const table = document.querySelector("table");
+  const tbody = table.querySelector("tbody");
+
+  const col = Array.from(tbody.querySelectorAll("tr"));
+
+  const Fact = ordre[idCol] === "asc" ? 1 : -1;
+
+  col.sort((LA, LB) => {
+    const ValA = LA.querySelectorAll("td")[idCol].textContent.trim();
+    const ValB = LB.querySelectorAll("td")[idCol].textContent.trim();
+
+    if (ValA.localeCompare(ValB) === 0) {
+      const nameA = LA.querySelectorAll("td")[1].textContent.trim();
+      const nameB = LB.querySelectorAll("td")[1].textContent.trim();
+      return nameA.localeCompare(nameB) * Fact;
+    }
+    return ValA.localeCompare(ValB) * Fact;
+  });
+
+  ordre[idCol] = ordre[idCol] === "asc" ? "desc" : "asc";
+
+  tbody.innerHTML = "";
+  col.forEach((row) => {
+    tbody.appendChild(row);
+  });
+
+  const ths = document.querySelectorAll("th");
+  ths.forEach((th) => {
+    th.style.fontWeight = "normal";
+  });
+  ths[idCol].style.fontWeight = "bold";
 }

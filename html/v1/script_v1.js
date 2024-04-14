@@ -1,7 +1,6 @@
 Pokemon.import_pokemon();
 
 
-function GenerateTable(table, nbpage){
 let table = document.querySelector("table");
 let tbody = table.lastElementChild;
 tbody.innerHTML = "";
@@ -21,18 +20,23 @@ for (let [Poke, val] of Object.entries(Pokemon.all_pokemons)) {
   td[4].textContent = val.stamina;
   td[5].textContent = val.atk;
   td[6].textContent = val.dfs;
-  td[7].innerHTML =
-    "<img src='/html/webp/thumbnails/" +
-    numeroimg +
-    ".webp' alt='" +
-    val.nom +
-    "'/>";
+  let path = "/html/webp/sprites/" + numeroimg + "MS.webp";
+  fetch(path)
+    .then((response) => {
+      if (response.status !== 200) {
+        path = "/html/webp/sprites/" + numeroimg + ".webp";
+      }
+      td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
+    })
+    .catch((error) => {
+      console.error(
+        "Une erreur s'est produite lors du chargement de l'image :",
+        error
+      );
+      // En cas d'erreur, on prends le point d'interrogation
+      path = "/html/webp/sprites/" + numeroimg + ".webp";
+      td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
+    });
 
   tbody.append(clone);
-
-}
-
-
-function ChangePage(nbpage){
-
 }

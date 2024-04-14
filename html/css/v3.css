@@ -71,6 +71,57 @@ tbody tr:hover {
     text-transform: capitalize;
 }
 
+.modal{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    backdrop-filter: blur(2px);
+    width: 400px;
+    height: 550px;
+    border-radius: 10px;
+    border: 15px solid #fdc70c;
+}
+
+.b-electric{
+    background-color: #f9e19d;
+}
+
+.d-none{
+    display: none;
+}
+
+.hover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 25%;
+    backdrop-filter: blur(2px);
+}
+
+.accordeon {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
+  
+  .active, .accordeon:hover {
+    background-color: #ccc;
+  }
+
+
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+  }
+
 /* Définition de la scrollbar */
 ::-webkit-scrollbar {
     width: 5px;

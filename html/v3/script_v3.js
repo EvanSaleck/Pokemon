@@ -23,12 +23,16 @@ function GeneratePokemon(page) {
   let table = document.querySelector("table");
   let tbody = table.lastElementChild;
   tbody.innerHTML = "";
+
   for (let [Poke, val] of Object.entries(Pokemon.all_pokemons)) {
     if (i > NBPARPAGE * (page - 1) && i <= NBPARPAGE * page) {
       let template = document.querySelector("#template-poke");
       const clone = template.content.cloneNode(true);
       let tr = clone.querySelector("tr");
       let td = clone.querySelectorAll("td");
+      
+      // Ajout d'un attribut unique a chaque pokémon
+      tr.setAttribute("poke-id", Poke);
 
       td[0].textContent = Poke;
 
@@ -81,7 +85,6 @@ function SetListeners() {
   pageactual.innerText = page;
   nbpage.innerText = NBDEPAGES;
 
-
   if (page <= 1) {
     btnprecedent.setAttribute("disabled", true);
   } else if (page == NBDEPAGES) {
@@ -95,7 +98,7 @@ function SetListeners() {
       page--;
       // On regénère les Pokémons avec la nouvelle page
       GeneratePokemon(page);
-      sessionStorage.setItem("page", page)
+      sessionStorage.setItem("page", page);
       pageactual.innerText = page;
       btnsuivant.removeAttribute("disabled");
     }
@@ -110,7 +113,7 @@ function SetListeners() {
     if (page < NBDEPAGES) {
       page++;
       GeneratePokemon(page);
-      sessionStorage.setItem("page", page)
+      sessionStorage.setItem("page", page);
       pageactual.innerText = page;
       btnprecedent.removeAttribute("disabled");
     }
@@ -119,4 +122,80 @@ function SetListeners() {
       btnsuivant.setAttribute("disabled", true);
     }
   });
+
+// Listeners Pour la modal
+// Listeners Pour la modal
+let tr = document.querySelectorAll("tbody tr");
+// console.log(tr);
+for (var i = 0; i < tr.length; ++i) {
+  tr[i].addEventListener("click", OpenModal); // Utilisez "click" au lieu de "onclick"
+  tr[i].lastElementChild.addEventListener("mouseover", HoverImage);
+  tr[i].lastElementChild.addEventListener("mouseleave", StopHover); // Ajoutez l'événement mouseleave à l'élément tr
+
 }
+}
+
+function OpenModal(event){
+  let id = event.srcElement.parentNode.getAttribute("poke-id")
+
+  let modal = document.getElementById("modal");
+  modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
+  modal.querySelector("#imgpoke").src = "/html/webp/thumbnails/"+id.toString().padStart(3, "0")+".webp";
+  let Attacks = Pokemon.all_pokemons[id].getAttacks();
+  let template = document.querySelector("#template-accordeon");
+  Attacks.forEach((attack) => {
+    if(attack.charge == false){
+      let clone = template.content.cloneNode(true);
+      let atk = clone.querySelector(".accordeon");
+      atk.textContent = attack.nom;
+      let val = clone.querySelector(".panel");
+      val.innerHTML = "<p>Durée : "+attack.duree+" Delta énergie : "+attack.deltae+" Perte de stamina : "+attack.staminaloss+" Chance critique : "+attack.critical_chance+" Type : "+attack.type+"</p>";
+      modal.querySelector("#listfast").appendChild(clone);
+    } else {
+      let clone = template.content.cloneNode(true);
+      let atk = clone.querySelector(".accordeon");
+      atk.textContent = attack.nom;
+      let val = clone.querySelector(".panel");
+      val.textContent = "<p>Durée : "+attack.duree+" Delta énergie : "+attack.deltae+" Perte de stamina : "+attack.staminaloss+" Chance critique : "+attack.critical_chance+" Type : "+attack.type+"</p>";
+      modal.querySelector("#listcharged").appendChild(clone);
+    }
+  });
+  modal.classList.remove("d-none");
+  let close = document.getElementById("close");
+  close.addEventListener("click", function(){
+    modal.classList.add("d-none");
+    modal.querySelector("#listfast").innerHTML = "";
+    modal.querySelector("#listcharged").innerHTML = "";
+  });
+    
+  var acc = document.getElementsByClassName("accordeon");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    console.log(acc)
+    acc[i].addEventListener("click", function() {
+      console.log("click")
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+}
+
+function HoverImage(event){
+  let id = event.srcElement.parentNode.getAttribute("poke-id") || event.srcElement.parentNode.parentNode.getAttribute("poke-id") 
+  let divimg = document.getElementById("divimg")
+  divimg.src = "/html/webp/images/"+id+".webp"
+  divimg.classList.remove("d-none")
+}
+
+function StopHover(event){
+  let id = event.srcElement.parentNode.getAttribute("poke-id") || event.srcElement.parentNode.parentNode.getAttribute("poke-id") 
+  divimg.classList.add("d-none")
+}
+
+console.log(Pokemon.all_pokemons[1].getAttacks())

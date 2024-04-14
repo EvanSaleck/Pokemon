@@ -4,42 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template Page</title>
-    <link rel="stylesheet" href="/html/css/v3.css">
+    <link rel="stylesheet" href="/html/css/v3-5.css">
 </head>
 <body>
     <img class="d-none hover" id="divimg"/>
-    <h1>Liste des Pokémons</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Génération</th>
-                <th>Types</th>
-                <th>Endurance</th>
-                <th>Attaque</th>
-                <th>Défense</th>
-                <th>Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <header>
+        <div class="banner">
+            <h1>Pokédex National</h1>
+        </div>
+    </header>
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Génération</th>
+                    <th scope="col">Types</th>
+                    <th scope="col">Endurance</th>
+                    <th scope="col">Attaque</th>
+                    <th scope="col">Défense</th>
+                    <th scope="col">Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="ID"></td>
+                    <td data-label="Nom"></td>
+                    <td data-label="Génération"></td>
+                    <td data-label="Types"></td>
+                    <td data-label="Endurance"></td>
+                    <td data-label="Attaque"></td>
+                    <td data-label="Défense"></td>
+                    <td data-label="Image"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
     <div id="pagination">
         <button id="precedent" style="text-transform: uppercase;">préc</button>
         <button id="suivant" style="text-transform: uppercase;">suiv</button>
         <p>Page <span id="pageactual"></span> / <span id="Nbpage"></span></p>
     </div>
+    
     <div id="modal" class="d-none modal b-electric">
         <button id="close">X</button>
         <h5 id="titre"></h5>
@@ -59,14 +67,14 @@
 
 <template id="template-poke">
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td data-label="ID"></td>
+        <td data-label="Nom"></td>
+        <td data-label="Génération"></td>
+        <td data-label="Types"></td>
+        <td data-label="Endurance"></td>
+        <td data-label="Attaque"></td>
+        <td data-label="Défense"></td>
+        <td data-label="Image"></td>
     </tr>
 </template>
 

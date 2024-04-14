@@ -3,16 +3,27 @@ Pokemon.import_pokemon();
 // Constante de nombres de Pokémons
 const NBPOKE = Object.keys(Pokemon.all_pokemons).length;
 const NBPARPAGE = 25;
-const NBDEPAGES = Math.ceil(NBPOKE / NBPARPAGE);
+let NBDEPAGES = Math.ceil(NBPOKE / NBPARPAGE);
 
 // Page actuelle (par défaut à 1)
 let page = sessionStorage.getItem("page") || 1;
 
 let ordre = {};
 
+let currentGenFilter = "all";
+let currentTypeFilter = "all";
+let currentNameFilter = "";
+
+let filteredPokemon = {};
+
+// Appel de la fonction fillSelect() au chargement de la page pour remplir les listes déroulantes
+document.addEventListener("DOMContentLoaded", function() {
+    fillSelect();
+});
+
+
 // Appel de la fonction GeneratePokemon qui affiche les Pokémons et appel des Listeners des boutons suivants et précédents
-GeneratePokemon(page);
-SetListeners();
+GeneratePokemon(page, Pokemon.all_pokemons);
 
 /**
  * Permet de générer 25 Pokémons par 25 et de les ajouter au DOM
@@ -20,54 +31,83 @@ SetListeners();
  * @returns None
  */
 
-function GeneratePokemon(page) {
-  let i = 1;
-  let table = document.querySelector("table");
-  let tbody = table.lastElementChild;
-  tbody.innerHTML = "";
+function GeneratePokemon(page, pokemons) {
+    let i = 1;
+    let table = document.querySelector("table");
+    let tbody = table.lastElementChild;
+    tbody.innerHTML = "";
 
-  for (let [Poke, val] of Object.entries(Pokemon.all_pokemons)) {
-    if (i > NBPARPAGE * (page - 1) && i <= NBPARPAGE * page) {
-      let template = document.querySelector("#template-poke");
-      const clone = template.content.cloneNode(true);
-      let tr = clone.querySelector("tr");
-      let td = clone.querySelectorAll("td");
+    // Convertir les Pokémon filtrés en tableau pour faciliter la pagination
+    let filteredPokemonArray = Object.entries(pokemons);
 
-      // Ajout d'un attribut unique a chaque pokémon
-      tr.setAttribute("poke-id", Poke);
+    // Calculer l'index de début et de fin en fonction de la page actuelle
+    let startIndex = (page - 1) * NBPARPAGE;
+    let endIndex = page * NBPARPAGE;
 
-      td[0].textContent = Poke;
+    // Limiter l'index de fin pour éviter les dépassements
+    endIndex = Math.min(endIndex, filteredPokemonArray.length);
 
-      let numeroimg = Poke.toString().padStart(3, "0");
+    // Parcourir les Pokémon filtrés pour afficher ceux de la page actuelle
+    for (let index = startIndex; index < endIndex; index++) {
+        const [Poke, val] = filteredPokemonArray[index];
+        let template = document.querySelector("#template-poke");
+        const clone = template.content.cloneNode(true);
+        let tr = clone.querySelector("tr");
+        let td = clone.querySelectorAll("td");
 
-      td[1].textContent = val.nom;
-      td[2].textContent = val.gen;
-      td[3].textContent = val.listetype;
-      td[4].textContent = val.stamina;
-      td[5].textContent = val.atk;
-      td[6].textContent = val.dfs;
-      let path = "/html/webp/sprites/" + numeroimg + "MS.webp";
-      fetch(path)
-        .then((response) => {
-          if (response.status !== 200) {
-            path = "/html/webp/sprites/" + numeroimg + ".webp";
-          }
-          td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors du chargement de l'image :",
-            error
-          );
-          // En cas d'erreur, on prends le point d'interrogation
-          path = "/html/webp/sprites/" + numeroimg + ".webp";
-          td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
-        });
+        // Ajout d'un attribut unique a chaque pokémon
+        tr.setAttribute("poke-id", Poke);
 
-      tbody.append(clone);
+        td[0].textContent = Poke;
+
+        let numeroimg = Poke.toString().padStart(3, "0");
+
+        td[1].textContent = val.nom;
+        td[2].textContent = val.gen;
+        td[3].textContent = val.listetype;
+        td[4].textContent = val.stamina;
+        td[5].textContent = val.atk;
+        td[6].textContent = val.dfs;
+        let path = "/html/webp/sprites/" + numeroimg + "MS.webp";
+        fetch(path)
+            .then((response) => {
+                if (response.status !== 200) {
+                    path = "/html/webp/sprites/" + numeroimg + ".webp";
+                }
+                td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
+            })
+            .catch((error) => {
+                console.error(
+                    "Une erreur s'est produite lors du chargement de l'image :",
+                    error
+                );
+                // En cas d'erreur, on prends le point d'interrogation
+                path = "/html/webp/sprites/" + numeroimg + ".webp";
+                td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
+            });
+
+        tbody.append(clone);
     }
-    i++;
-  }
+    SetListeners();
+}
+
+
+function fillSelect(){
+    let select = document.getElementById("gen");
+    Object.keys(generation).forEach((gen) => {
+        let option = document.createElement("option");
+        option.value = gen.slice(-1);
+        option.textContent = gen;
+        select.appendChild(option);
+    });
+    let select2 = document.getElementById("type");
+    Object.keys(type_effectiveness).forEach((type) => {
+        let option = document.createElement("option");
+        option.value = type;
+        option.textContent = type;
+        select2.appendChild(option);
+    });
+    
 }
 
 /**
@@ -75,57 +115,56 @@ function GeneratePokemon(page) {
  * @param None
  * @returns None
  */
-
 function SetListeners() {
-  // On définit les boutons précédent et suivant
-  let btnprecedent = document.getElementById("precedent");
-  let btnsuivant = document.getElementById("suivant");
-  let pageactual = document.getElementById("pageactual");
-  let nbpage = document.getElementById("Nbpage");
-
-  // Définition de base de la page par défaut
-  pageactual.innerText = page;
-  nbpage.innerText = NBDEPAGES;
-
-  if (page <= 1) {
-    btnprecedent.setAttribute("disabled", true);
-  } else if (page == NBDEPAGES) {
-    btnsuivant.setAttribute("disabled", true);
-  }
-
-  // Ajout des Listeners sur les boutons pour afficher les Pokémons précédents ou suivants
-  btnprecedent.addEventListener("click", function () {
-    // Si la page est plus grande que 1 on la décrémente au moment du clic
-    if (page > 1) {
-      page--;
-      // On regénère les Pokémons avec la nouvelle page
-      GeneratePokemon(page);
-      sessionStorage.setItem("page", page);
-      pageactual.innerText = page;
-      btnsuivant.removeAttribute("disabled");
-    }
-    // Si elle devient égale ou plus petite a 1 alors on ne peut plus cliquer sur précédent
+    // Définissez les boutons précédent et suivant
+    let btnprecedent = document.getElementById("precedent");
+    let btnsuivant = document.getElementById("suivant");
+    let pageactual = document.getElementById("pageactual");
+    let nbpage = document.getElementById("Nbpage");
+  
+    // Définition de la page par défaut
+    pageactual.innerText = page;
+    nbpage.innerText = NBDEPAGES;
+  
     if (page <= 1) {
       btnprecedent.setAttribute("disabled", true);
-    }
-  });
-
-  btnsuivant.addEventListener("click", function () {
-    // Si la page est plus petite que NBDEPAGES on l'incrémente au moment du clic
-    if (page < NBDEPAGES) {
-      page++;
-      GeneratePokemon(page);
-      sessionStorage.setItem("page", page);
-      pageactual.innerText = page;
-      btnprecedent.removeAttribute("disabled");
-    }
-    // Si elle devient égale NBDEPAGES alors on ne peut plus cliquer sur suivant
-    if (page == NBDEPAGES) {
+    } else if (page == NBDEPAGES) {
       btnsuivant.setAttribute("disabled", true);
     }
-  });
+  
+    // Ajout des écouteurs sur les boutons pour afficher les Pokémons précédents ou suivants
+    btnprecedent.addEventListener("click", function () {
+      // Si la page est supérieure à 1, décrémentez-la au moment du clic
+      if (page > 1) {
+        page--;
+        // Regénérez les Pokémons avec la nouvelle page
+        GeneratePokemon(page, filteredPokemon); // Utilisez filteredPokemon ici
+        sessionStorage.setItem("page", page);
+        pageactual.innerText = page;
+        btnsuivant.removeAttribute("disabled");
+      }
+      // Si elle devient égale ou inférieure à 1, désactivez le bouton précédent
+      if (page <= 1) {
+        btnprecedent.setAttribute("disabled", true);
+      }
+    });
+  
+    btnsuivant.addEventListener("click", function () {
+      // Si la page est inférieure à NBDEPAGES, incrémentez-la au moment du clic
+      if (page < NBDEPAGES) {
+        page++;
+        GeneratePokemon(page, filteredPokemon); // Utilisez filteredPokemon ici
+        sessionStorage.setItem("page", page);
+        pageactual.innerText = page;
+        btnprecedent.removeAttribute("disabled");
+      }
+      // Si elle devient égale à NBDEPAGES, désactivez le bouton suivant
+      if (page == NBDEPAGES) {
+        btnsuivant.setAttribute("disabled", true);
+      }
+    });
+  
 
-  // Listeners Pour la modal
   // Listeners Pour la modal
   let tr = document.querySelectorAll("tbody tr");
   // console.log(tr);
@@ -135,11 +174,50 @@ function SetListeners() {
     tr[i].lastElementChild.addEventListener("mouseleave", StopHover); // Ajoutez l'événement mouseleave à l'élément tr
   }
 
+// Listeners sur les listes déroulantes et le champ de texte pour les filtres
+document.getElementById("gen").addEventListener("change", handleFilterChange);
+document.getElementById("type").addEventListener("change", handleFilterChange);
+document.getElementById("nom").addEventListener("input", handleFilterChange);
+
+  // Listeners pour le tri des colonnes
   document.querySelectorAll("th:not(:last-child)").forEach((th, index) => {
     th.addEventListener("click", () => {
       TrierPokemon(index);
     });
   });
+}
+
+// Fonction pour gérer les changements de filtres
+function handleFilterChange() {
+    // Récupérer les valeurs sélectionnées dans les listes déroulantes
+    let genFilter = document.getElementById("gen").value;
+    let typeFilter = document.getElementById("type").value;
+    let nameFilter = document.getElementById("nom").value;
+
+    // Filtrer les Pokémon en fonction des critères sélectionnés
+    filteredPokemon = filterPokemon(genFilter, typeFilter, nameFilter);
+
+    // Mettre à jour la pagination et afficher les Pokémon filtrés sur la première page
+    page = 1;
+    // Régénérer la liste des Pokémon en fonction des nouveaux critères de filtrage
+    GeneratePokemon(page, filteredPokemon);
+    console.log(filteredPokemon);
+
+    UpdatePage(filteredPokemon);
+}
+
+// Fonction pour filtrer les Pokémon en fonction des critères sélectionnés
+function filterPokemon(genFilter, typeFilter, nameFilter) {
+    // Parcourir tous les Pokémon et appliquer les filtres
+    for (const pokemonId in Pokemon.all_pokemons) {
+        const pokemon = Pokemon.all_pokemons[pokemonId];
+        if ((genFilter === "all" || pokemon.gen === genFilter) &&
+            (typeFilter === "all" || pokemon.getTypes().some((type) => type.nom_type === typeFilter)) &&
+            (nameFilter === "" || pokemon.nom.toLowerCase().includes(nameFilter.toLowerCase()))) {
+            filteredPokemon[pokemonId] = pokemon;
+        }
+    }
+    return filteredPokemon;
 }
 
 /**
@@ -148,7 +226,9 @@ function SetListeners() {
  * @returns None
  */
 function OpenModal(event) {
-  let id = event.srcElement.parentNode.getAttribute("poke-id");
+    ClearModal();
+  let id = event.srcElement.parentNode.getAttribute("poke-id") || event.srcElement.parentNode.parentNode.getAttribute("poke-id");
+  console.log(id);
 
   let modal = document.getElementById("modal");
   modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
@@ -221,6 +301,14 @@ function OpenModal(event) {
   }
 }
 
+function ClearModal() {
+  let modal = document.getElementById("modal");
+  modal.querySelector("#titre").innerText = "";
+  modal.querySelector("#imgpoke").src = "";
+  modal.querySelector("#listfast").innerHTML = "";
+  modal.querySelector("#listcharged").innerHTML = "";
+}
+
 /**
  * Fonction qui permet d'afficher l'image du Pokémon au survol de la souris
  * @param {*} event
@@ -228,8 +316,8 @@ function OpenModal(event) {
  */
 function HoverImage(event) {
   let id =
-    event.srcElement.parentNode.getAttribute("poke-id") ||
-    event.srcElement.parentNode.parentNode.getAttribute("poke-id");
+    event.srcElement.parentNode.getAttribute("poke-id").toString().padStart(3, "0") ||
+    event.srcElement.parentNode.parentNode.getAttribute("poke-id").toString().padStart(3, "0");
   let divimg = document.getElementById("divimg");
   divimg.src = "/html/webp/images/" + id + ".webp";
   divimg.classList.remove("d-none");
@@ -247,41 +335,18 @@ function StopHover(event) {
   divimg.classList.add("d-none");
 }
 
-/**
- * Fonction getPokemonsByType()
- * @param {*} typeName
- * @returns liste des pokémons ayant le type spécifié
- */
-function getPokemonsByType(typeName) {
-    let pokemons = [];
-    // Parcours de tous les Pokémon
-    for (const pokemonId in Pokemon.all_pokemons) {
-      const pokemon = Pokemon.all_pokemons[pokemonId];
-      // Vérification si le Pokémon possède le type spécifiée
-      if (pokemon.getTypes().some((type) => type.nom_type == typeName)) {
-        // Ajout du Pokémon à la liste des Pokémon ayant le type spécifié
-        pokemons.push(pokemon);
-      }
-    }
-    return pokemons;
-  }
-
-  /**
- * Fonction getPokemonsByGen()
- * @param {*} GenName
- * @returns liste des pokémons ayant la génération spécifiée
- */
-  function getPokemonsByGen(GenName) {
-    let pokemons = [];
-    // Parcours de tous les Pokémon
-    for (const pokemonId in Pokemon.all_pokemons) {
-        const pokemon = Pokemon.all_pokemons[pokemonId];
-        if (pokemon.gen === GenName) {
-            pokemons.push(pokemon);
-        }
-    }
-    return pokemons;
+function destroyTable() {
+    let table = document.querySelector("table");
+    let tbody = table.lastElementChild;
+    tbody.innerHTML = "";
 }
+
+function UpdatePage(poke) {
+    let nbpage = document.getElementById("Nbpage");
+    NBDEPAGES = Math.ceil(Object.keys(poke).length / NBPARPAGE);
+    nbpage.textContent = NBDEPAGES;
+}
+
 
 /**
  * Fonction qui permet de trier les Pokémons en fonction de la colonne cliquée

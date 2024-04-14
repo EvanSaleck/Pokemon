@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template Page</title>
-    <link rel="stylesheet" href="/html/css/v3.css">
+    <link rel="stylesheet" href="/html/css/v4.css">
 </head>
 <body>
     <img class="d-none hover" id="divimg"/>
     <h1>Liste des Pokémons</h1>
     <div class="filtre">
         <label for="gen">Génération</label>
-        <select name="gen" id="gen">
+        <select name="gen" class="filtres" id="gen">
             <option value="all">Tous</option>
         </select>
         <label for="type">Type</label>
-        <select name="type" id="type">
+        <select name="type" class="filtres" id="type">
             <option value="all">Tous</option>
         </select>
         <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" placeholder="Entrez le nom du pokémon">
+        <input type="text" name="nom" id="nom" class="filtres" placeholder="Entrez le nom du pokémon">
     </div>
-    <table>
+    <table id="table">
         <thead>
             <tr>
                 <th>ID</th>

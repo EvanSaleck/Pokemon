@@ -46,11 +46,11 @@ function GeneratePokemon(page) {
       td[4].textContent = val.stamina;
       td[5].textContent = val.atk;
       td[6].textContent = val.dfs;
-      let path = "/html/webp/sprites/" + numeroimg + "MS.webp";
+      let path = "../../webp/sprites/" + numeroimg + "MS.webp";
       fetch(path)
         .then((response) => {
           if (response.status !== 200) {
-            path = "/html/webp/sprites/" + numeroimg + ".webp";
+            path = "../../webp/sprites/" + numeroimg + ".webp";
           }
           td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
         })
@@ -60,7 +60,7 @@ function GeneratePokemon(page) {
             error
           );
           // En cas d'erreur, on prends le point d'interrogation
-          path = "/html/webp/sprites/" + numeroimg + ".webp";
+          path = "../../webp/sprites/" + numeroimg + ".webp";
           td[7].innerHTML = "<img src='" + path + "' alt='" + val.nom + "'/>";
         });
 
@@ -153,7 +153,7 @@ function OpenModal(event) {
   let modal = document.getElementById("modal");
   modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
   modal.querySelector("#imgpoke").src =
-    "/html/webp/thumbnails/" + id.toString().padStart(3, "0") + ".webp";
+    "../../webp/thumbnails/" + id.toString().padStart(3, "0") + ".webp";
   let Attacks = Pokemon.all_pokemons[id].getAttacks();
   let template = document.querySelector("#template-accordeon");
   Attacks.forEach((attack) => {
@@ -231,7 +231,7 @@ function HoverImage(event) {
     event.srcElement.parentNode.getAttribute("poke-id") ||
     event.srcElement.parentNode.parentNode.getAttribute("poke-id");
   let divimg = document.getElementById("divimg");
-  divimg.src = "/html/webp/images/" + id + ".webp";
+  divimg.src = "../../webp/images/" + id + ".webp";
   divimg.classList.remove("d-none");
 }
 

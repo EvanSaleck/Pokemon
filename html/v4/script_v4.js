@@ -138,6 +138,150 @@ document.getElementById("nom").addEventListener("input", handleFilterChange);
   });
 }
 
+/**
+ * Création de la modale et de l'overlay
+*/
+document.body.insertAdjacentHTML('beforeend', '<div class="overlay"></div>');
+const overlay = document.querySelector('.overlay');
+/**
+ * Fonction qui permet d'ouvrir ou de fermer la modal
+ * @returns None
+ */
+function toggleModal() {
+    let modal = document.getElementById("modal");
+    modal.classList.toggle('active');
+    modal.classList.toggle('position');
+    overlay.classList.toggle('active');
+}
+/**
+ * Fonction qui permet de fermer la modal
+ * @returns None
+ */
+function closeModal() {
+    let modal = document.getElementById("modal");
+    modal.classList.remove('active');
+    modal.classList.remove('position');
+    modal.querySelector("#listfast").innerHTML = "";
+    modal.querySelector("#listcharged").innerHTML = "";
+    overlay.classList.remove('active');
+}
+
+overlay.addEventListener('click', closeModal);
+
+document.getElementById("close").addEventListener("click", closeModal);
+/**
+ * Fonction qui permet d'ouvrir une modal avec les informations du Pokémon
+ * @param {*} event
+ * @returns None
+ */
+function OpenModal(event) {
+  toggleModal();
+
+  let id = event.srcElement.parentNode.getAttribute("poke-id");
+
+  let modal = document.getElementById("modal");
+  modal.querySelector("#listfast").innerHTML = "";
+  modal.querySelector("#listcharged").innerHTML = "";
+  modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
+  modal.querySelector("#imgpoke").src =
+    "/html/webp/thumbnails/" + id.toString().padStart(3, "0") + ".webp";
+  let Attacks = Pokemon.all_pokemons[id].getAttacks();
+  let template = document.querySelector("#template-accordeon");
+  Attacks.forEach((attack) => {
+    if (attack.charge == false) {
+      let clone = template.content.cloneNode(true);
+      let atk = clone.querySelector(".accordeon");
+      atk.textContent = attack.nom;
+      let val = clone.querySelector(".panel");
+      val.innerHTML =
+        "<p>Durée : " +
+        attack.duree +
+        " Delta énergie : " +
+        attack.deltae +
+        " Perte de stamina : " +
+        attack.staminaloss +
+        " Chance critique : " +
+        attack.critical_chance +
+        " Type : " +
+        attack.type;
+      modal.querySelector("#listfast").appendChild(clone);
+    } else {
+      let clone = template.content.cloneNode(true);
+      let atk = clone.querySelector(".accordeon");
+      atk.textContent = attack.nom;
+      let val = clone.querySelector(".panel");
+      val.textContent =
+        "Durée : " +
+        attack.duree +
+        " Delta énergie : " +
+        attack.deltae +
+        " Perte de stamina : " +
+        attack.staminaloss +
+        " Chance critique : " +
+        attack.critical_chance +
+        " Type : " +
+        attack.type;
+      modal.querySelector("#listcharged").appendChild(clone);
+    }
+  });
+  modal.classList.remove("d-none");
+  let close = document.getElementById("close");
+  close.addEventListener("click", function () {
+    modal.classList.add("d-none");
+    modal.querySelector("#listfast").innerHTML = "";
+    modal.querySelector("#listcharged").innerHTML = "";
+  });
+
+  var acc = document.getElementsByClassName("accordeon");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    console.log(acc);
+    acc[i].addEventListener("click", function () {
+      console.log("click");
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+}
+
+
+/**
+ * Fonction qui permet d'afficher l'image du Pokémon au survol de la souris
+ * @param {*} event
+ * @returns None
+ */
+function HoverImage(event) {
+    let id =
+      event.srcElement.parentNode.getAttribute("poke-id") ||
+      event.srcElement.parentNode.parentNode.getAttribute("poke-id");
+    let divimg = document.getElementById("divimg");
+    divimg.src = "../../webp/images/" + id + ".webp";
+    divimg.classList.remove("d-none");
+  }
+
+  /**
+   * Fonction qui permet de cacher l'image du Pokémon au survol de la souris
+   * @param {*} event
+   * @returns None
+   */
+  function StopHover(event) {
+    let id =
+      event.srcElement.parentNode.getAttribute("poke-id") ||
+      event.srcElement.parentNode.parentNode.getAttribute("poke-id");
+    divimg.classList.add("d-none");
+  }
+  
+
+/**
+ * Fonction qui permet de définir les écouteurs d'évènements sur les boutons précédent et suivant
+ * @returns None
+ */
 function SetBtnListeners(){
     // Définissez les boutons précédent et suivant
     let btnprecedent = document.getElementById("precedent");
@@ -187,7 +331,11 @@ function SetBtnListeners(){
     });
 }
 
-// Fonction pour gérer les changements de filtres
+/**
+ * Fonction qui permet de trier les Pokémon en fonction des filtres
+ * @param {*} index
+ * @returns None
+ */
 function handleFilterChange() {
     // Récupérer les valeurs sélectionnées dans les listes déroulantes
     let genFilter = document.getElementById("gen").value;
@@ -239,111 +387,6 @@ function filterPokemon(genFilter, typeFilter, nameFilter) {
     return filtered; // Retourner les Pokémon filtrés
 }
 
-/**
- * Fonction qui permet d'ouvrir une modal avec les informations du Pokémon
- * @param {*} event
- * @returns None
- */
-function OpenModal(event) {
-  let id = event.srcElement.parentNode.getAttribute("poke-id") || event.srcElement.parentNode.parentNode.getAttribute("poke-id");
-  console.log(id);
-
-  let modal = document.getElementById("modal");
-  modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
-  modal.querySelector("#imgpoke").src =
-    "/html/webp/thumbnails/" + id.toString().padStart(3, "0") + ".webp";
-  let Attacks = Pokemon.all_pokemons[id].getAttacks();
-  let template = document.querySelector("#template-accordeon");
-  Attacks.forEach((attack) => {
-    if (attack.charge == false) {
-      let clone = template.content.cloneNode(true);
-      let atk = clone.querySelector(".accordeon");
-      atk.textContent = attack.nom;
-      let val = clone.querySelector(".panel");
-      val.innerHTML =
-        "<p>Durée : " +
-        attack.duree +
-        " Delta énergie : " +
-        attack.deltae +
-        " Perte de stamina : " +
-        attack.staminaloss +
-        " Chance critique : " +
-        attack.critical_chance +
-        " Type : " +
-        attack.type +
-        "</p>";
-      modal.querySelector("#listfast").appendChild(clone);
-    } else {
-      let clone = template.content.cloneNode(true);
-      let atk = clone.querySelector(".accordeon");
-      atk.textContent = attack.nom;
-      let val = clone.querySelector(".panel");
-      val.textContent =
-        "<p>Durée : " +
-        attack.duree +
-        " Delta énergie : " +
-        attack.deltae +
-        " Perte de stamina : " +
-        attack.staminaloss +
-        " Chance critique : " +
-        attack.critical_chance +
-        " Type : " +
-        attack.type +
-        "</p>";
-      modal.querySelector("#listcharged").appendChild(clone);
-    }
-  });
-  modal.classList.remove("d-none");
-  let close = document.getElementById("close");
-  close.addEventListener("click", function () {
-    modal.classList.add("d-none");
-    modal.querySelector("#listfast").innerHTML = "";
-    modal.querySelector("#listcharged").innerHTML = "";
-  });
-
-  var acc = document.getElementsByClassName("accordeon");
-  var i;
-
-  for (i = 0; i < acc.length; i++) {
-    console.log(acc);
-    acc[i].addEventListener("click", function () {
-      console.log("click");
-      this.classList.toggle("active");
-      var panel = this.nextElementSibling;
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-      } else {
-        panel.style.display = "block";
-      }
-    });
-  }
-}
-
-/**
- * Fonction qui permet d'afficher l'image du Pokémon au survol de la souris
- * @param {*} event
- * @returns None
- */
-function HoverImage(event) {
-  let id =
-    event.srcElement.parentNode.getAttribute("poke-id").toString().padStart(3, "0") ||
-    event.srcElement.parentNode.parentNode.getAttribute("poke-id").toString().padStart(3, "0");
-  let divimg = document.getElementById("divimg");
-  divimg.src = "/html/webp/images/" + id + ".webp";
-  divimg.classList.remove("d-none");
-}
-
-/**
- * Fonction qui permet de cacher l'image du Pokémon au survol de la souris
- * @param {*} event
- * @returns None
- */
-function StopHover(event) {
-  let id =
-    event.srcElement.parentNode.getAttribute("poke-id") ||
-    event.srcElement.parentNode.parentNode.getAttribute("poke-id");
-  divimg.classList.add("d-none");
-}
 /**
  * Fonction qui permet de trier les Pokémon en fonction de l'index de la colonne
  * @returns None

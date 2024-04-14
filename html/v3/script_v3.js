@@ -123,10 +123,8 @@ function SetListeners() {
     }
   });
 
-  // Listeners Pour la modal
-  // Listeners Pour la modal
+  // Listeners Pour la modale et l'image
   let tr = document.querySelectorAll("tbody tr");
-  // console.log(tr);
   for (var i = 0; i < tr.length; ++i) {
     tr[i].addEventListener("click", OpenModal); // Utilisez "click" au lieu de "onclick"
     tr[i].lastElementChild.addEventListener("mouseover", HoverImage);
@@ -135,14 +133,49 @@ function SetListeners() {
 }
 
 /**
+ * Création de la modale et de l'overlay
+*/
+document.body.insertAdjacentHTML('beforeend', '<div class="overlay"></div>');
+const overlay = document.querySelector('.overlay');
+/**
+ * Fonction qui permet d'ouvrir ou de fermer la modal
+ * @returns None
+ */
+function toggleModal() {
+    let modal = document.getElementById("modal");
+    modal.classList.toggle('active');
+    modal.classList.toggle('position');
+    overlay.classList.toggle('active');
+}
+/**
+ * Fonction qui permet de fermer la modal
+ * @returns None
+ */
+function closeModal() {
+    let modal = document.getElementById("modal");
+    modal.classList.remove('active');
+    modal.classList.remove('position');
+    modal.querySelector("#listfast").innerHTML = "";
+    modal.querySelector("#listcharged").innerHTML = "";
+    overlay.classList.remove('active');
+}
+
+overlay.addEventListener('click', closeModal);
+
+document.getElementById("close").addEventListener("click", closeModal);
+/**
  * Fonction qui permet d'ouvrir une modal avec les informations du Pokémon
  * @param {*} event
  * @returns None
  */
 function OpenModal(event) {
+  toggleModal();
+
   let id = event.srcElement.parentNode.getAttribute("poke-id");
 
   let modal = document.getElementById("modal");
+  modal.querySelector("#listfast").innerHTML = "";
+  modal.querySelector("#listcharged").innerHTML = "";
   modal.querySelector("#titre").innerText = Pokemon.all_pokemons[id].getNom();
   modal.querySelector("#imgpoke").src =
     "/html/webp/thumbnails/" + id.toString().padStart(3, "0") + ".webp";
@@ -164,8 +197,7 @@ function OpenModal(event) {
         " Chance critique : " +
         attack.critical_chance +
         " Type : " +
-        attack.type +
-        "</p>";
+        attack.type;
       modal.querySelector("#listfast").appendChild(clone);
     } else {
       let clone = template.content.cloneNode(true);
@@ -173,7 +205,7 @@ function OpenModal(event) {
       atk.textContent = attack.nom;
       let val = clone.querySelector(".panel");
       val.textContent =
-        "<p>Durée : " +
+        "Durée : " +
         attack.duree +
         " Delta énergie : " +
         attack.deltae +
@@ -182,8 +214,7 @@ function OpenModal(event) {
         " Chance critique : " +
         attack.critical_chance +
         " Type : " +
-        attack.type +
-        "</p>";
+        attack.type;
       modal.querySelector("#listcharged").appendChild(clone);
     }
   });

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Page</title>
+    <link rel="stylesheet" href="/html/css/v3.css">
+</head>
+<body>
+    <img class="d-none hover" id="divimg"/>
+    <h1>Liste des Pokémons</h1>
+    <div class="filtre">
+        <label for="gen">Génération</label>
+        <select name="gen" id="gen">
+            <option value="all">Tous</option>
+        </select>
+        <label for="type">Type</label>
+        <select name="type" id="type">
+            <option value="all">Tous</option>
+        </select>
+        <label for="nom">Nom</label>
+        <input type="text" name="nom" id="nom" placeholder="Entrez le nom du pokémon">
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Génération</th>
+                <th>Types</th>
+                <th>Endurance</th>
+                <th>Attaque</th>
+                <th>Défense</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pagination">
+        <button id="precedent" style="text-transform: uppercase;">préc</button>
+        <button id="suivant" style="text-transform: uppercase;">suiv</button>
+        <p>Page <span id="pageactual"></span> / <span id="Nbpage"></span></p>
+    </div>
+    <div id="modal" class="d-none modal b-electric">
+        <button id="close">X</button>
+        <h5 id="titre"></h5>
+        <img id="imgpoke"/>
+        <div id="listatk">
+            <div id="fast">
+                <h5>Attaque Rapide</h5>
+                <div id="listfast"></div>
+            </div>
+            <div id="charged">
+                <h5>Attaque chargée</h5>
+                <div id="listcharged"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<template id="template-poke">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</template>
+
+<template id="template-accordeon">
+    <button class="accordeon"></button>
+    <div class="panel"></div>
+</template>
+</html>
+
+
+<!-- Données -->
+<script src="../data/charged_moves.js"></script>
+<script src="../data/cp_multiplier.js"></script>
+<script src="../data/fast_moves.js"></script>
+<script src="../data/generation.js"></script>
+<script src="../data/pokemon_moves.js"></script>
+<script src="../data/pokemon_type.js"></script>
+<script src="../data/pokemon.js"></script>
+<script src="../data/type_effectiveness.js"></script>
+
+<!-- Classes -->
+<script src="../data/class_pokemon.js"></script>
+<script src="../data/class_type.js"></script>
+<script src="../data/class_attack.js"></script>
+
+<script src="./script_v4.js"></script>

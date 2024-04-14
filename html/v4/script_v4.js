@@ -8,6 +8,8 @@ const NBDEPAGES = Math.ceil(NBPOKE / NBPARPAGE);
 // Page actuelle (par défaut à 1)
 let page = sessionStorage.getItem("page") || 1;
 
+let ordre = {};
+
 // Appel de la fonction GeneratePokemon qui affiche les Pokémons et appel des Listeners des boutons suivants et précédents
 GeneratePokemon(page);
 SetListeners();
@@ -132,6 +134,12 @@ function SetListeners() {
     tr[i].lastElementChild.addEventListener("mouseover", HoverImage);
     tr[i].lastElementChild.addEventListener("mouseleave", StopHover); // Ajoutez l'événement mouseleave à l'élément tr
   }
+
+  document.querySelectorAll("th:not(:last-child)").forEach((th, index) => {
+    th.addEventListener("click", () => {
+      TrierPokemon(index);
+    });
+  });
 }
 
 /**
@@ -237,4 +245,79 @@ function StopHover(event) {
     event.srcElement.parentNode.getAttribute("poke-id") ||
     event.srcElement.parentNode.parentNode.getAttribute("poke-id");
   divimg.classList.add("d-none");
+}
+
+/**
+ * Fonction getPokemonsByType()
+ * @param {*} typeName
+ * @returns liste des pokémons ayant le type spécifié
+ */
+function getPokemonsByType(typeName) {
+    let pokemons = [];
+    // Parcours de tous les Pokémon
+    for (const pokemonId in Pokemon.all_pokemons) {
+      const pokemon = Pokemon.all_pokemons[pokemonId];
+      // Vérification si le Pokémon possède le type spécifiée
+      if (pokemon.getTypes().some((type) => type.nom_type == typeName)) {
+        // Ajout du Pokémon à la liste des Pokémon ayant le type spécifié
+        pokemons.push(pokemon);
+      }
+    }
+    return pokemons;
+  }
+
+  /**
+ * Fonction getPokemonsByGen()
+ * @param {*} GenName
+ * @returns liste des pokémons ayant la génération spécifiée
+ */
+  function getPokemonsByGen(GenName) {
+    let pokemons = [];
+    // Parcours de tous les Pokémon
+    for (const pokemonId in Pokemon.all_pokemons) {
+        const pokemon = Pokemon.all_pokemons[pokemonId];
+        if (pokemon.gen === GenName) {
+            pokemons.push(pokemon);
+        }
+    }
+    return pokemons;
+}
+
+/**
+ * Fonction qui permet de trier les Pokémons en fonction de la colonne cliquée
+ * @param {*} idCol
+ * @returns None
+ */
+function TrierPokemon(idCol) {
+  const table = document.querySelector("table");
+  const tbody = table.querySelector("tbody");
+
+  const col = Array.from(tbody.querySelectorAll("tr"));
+
+  const Fact = ordre[idCol] === "asc" ? 1 : -1;
+
+  col.sort((LA, LB) => {
+    const ValA = LA.querySelectorAll("td")[idCol].textContent.trim();
+    const ValB = LB.querySelectorAll("td")[idCol].textContent.trim();
+
+    if (ValA.localeCompare(ValB) === 0) {
+      const nameA = LA.querySelectorAll("td")[1].textContent.trim();
+      const nameB = LB.querySelectorAll("td")[1].textContent.trim();
+      return nameA.localeCompare(nameB) * Fact;
+    }
+    return ValA.localeCompare(ValB) * Fact;
+  });
+
+  ordre[idCol] = ordre[idCol] === "asc" ? "desc" : "asc";
+
+  tbody.innerHTML = "";
+  col.forEach((row) => {
+    tbody.appendChild(row);
+  });
+
+  const ths = document.querySelectorAll("th");
+  ths.forEach((th) => {
+    th.style.fontWeight = "normal";
+  });
+  ths[idCol].style.fontWeight = "bold";
 }

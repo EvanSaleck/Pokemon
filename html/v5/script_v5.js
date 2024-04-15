@@ -261,7 +261,7 @@ function HoverImage(event) {
       event.srcElement.parentNode.getAttribute("poke-id") ||
       event.srcElement.parentNode.parentNode.getAttribute("poke-id");
     let divimg = document.getElementById("divimg");
-    divimg.src = "../../webp/images/" + id + ".webp";
+    divimg.src = "../../webp/images/" + id.toString().padStart(3, "0")  + ".webp";
     divimg.classList.remove("d-none");
   }
 

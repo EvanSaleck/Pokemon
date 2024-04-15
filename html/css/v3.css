@@ -144,6 +144,18 @@ text-transform: uppercase;
 }
 
 /* --------------- Style modal --------------- */
+/* .modal{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    width: 400px;
+    height: 550px;
+    border-radius: 10px;
+    border: 15px solid #fdc70c;
+} */
 .overlay {
     position: fixed;
     top: 0;
@@ -158,7 +170,6 @@ text-transform: uppercase;
     pointer-events: none;
 }
 .position {
-    z-index: 1050;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -166,6 +177,7 @@ text-transform: uppercase;
 }
 .modal {
     transform: translate(-50%, -50%);
+    z-index: 1050;
     width: 80%;
     max-width: 600px;
     background: white;
@@ -178,10 +190,12 @@ text-transform: uppercase;
     overflow-y: auto; /* Ajouté pour permettre le défilement */
     max-height: 90vh; /* Limite la hauteur de la modale à 90% de la hauteur de la fenêtre */
 }
+
 .modal.active {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 }
+
 
 .position {
     position: fixed;

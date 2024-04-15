@@ -170,7 +170,7 @@ text-transform: uppercase;
     pointer-events: none;
 }
 .position {
-    z-index: 1050;
+    width: 80%;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -178,7 +178,8 @@ text-transform: uppercase;
 }
 .modal {
     transform: translate(-50%, -50%);
-    width: 80%;
+    z-index: 1050;
+
     max-width: 600px;
     background: white;
     border: 1px solid #ccc;
@@ -189,6 +190,11 @@ text-transform: uppercase;
     transform: translate(-50%, -50%) scale(1.1);
     overflow-y: auto; /* Ajouté pour permettre le défilement */
     max-height: 90vh; /* Limite la hauteur de la modale à 90% de la hauteur de la fenêtre */
+}
+
+.modal.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 .accordeon {
     background-color: #eee;

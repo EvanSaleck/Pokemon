@@ -170,7 +170,6 @@ text-transform: uppercase;
     pointer-events: none;
 }
 .position {
-    z-index: 1050;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -178,6 +177,7 @@ text-transform: uppercase;
 }
 .modal {
     transform: translate(-50%, -50%);
+    z-index: 1050;
     width: 80%;
     max-width: 600px;
     background: white;
